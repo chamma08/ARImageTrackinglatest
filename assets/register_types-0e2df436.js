@@ -1,0 +1,1 @@
+import{Behaviour as t,TypeStore as e}from"./needle-engine-71268de6.js";import"./three.module-19edce0d.js";import"./index-455a5830.js";class o extends t{start(){console.log("hey")}update(){this.gameObject.rotateZ(this.context.time.deltaTime)}}e.add("Rotate",o);

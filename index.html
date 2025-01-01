@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AR Navigation Example</title>
+    <!-- Include A-Frame and MindAR -->
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/webxr-polyfill@latest/build/webxr-polyfill.min.js"></script>
+
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+
+        height: 100%;
+        overflow: hidden;
+      }
+      a-scene {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: none; /* Hide scenes initially */
+      }
+      a-scene.active {
+        display: block; /* Show only the active scene */
+      }
+
+      #message-box {
+        position: fixed;
+        top: 10%; /* Adjust to fit on smaller screens */
+        height: 500px;
+        margin-left: 13px;
+        width: 65%; /* Responsive width */
+        background: rgba(
+          255,
+          255,
+          255,
+          0.9
+        ); /* Semi-transparent black background */
+        color: rgb(0, 0, 0);
+        padding: 20px 20px 15px; /* Adjust padding to accommodate close button */
+        border-radius: 10px;
+        z-index: 1000;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        word-wrap: break-word; /* Ensure text wraps */
+        margin-top: 20px;
+        border: #ff7002;
+      }
+
+      #message-content {
+        position: relative;
+        text-align: center;
+      }
+
+      #close-button {
+        position: absolute;
+        top: 14px;
+        right: 10px;
+        background: rgba(66, 65, 65, 0.3);
+        border: none;
+        color: rgb(0, 0, 0);
+        font-size: 10px;
+        cursor: pointer;
+        outline: none;
+        font-weight: bolder;
+        padding: 5px;
+        border-radius: 100%;
+      }
+
+      #navigation-buttons {
+        justify-content: space-between;
+        margin-top: 60px;
+        margin-left: 40px;
+        
+      }
+
+      #close-button:hover {
+        color: red;
+      }
+
+      /* Make sure text size adjusts for small screens */
+      #message-box p {
+        font-size: 3rem; /* Default for regular screens */
+      }
+
+      /* Media query for smaller screens */
+      @media screen and (max-width: 600px) {
+        #message-box {
+          top: 5%;
+          width: 330px;
+          padding: 15px 15px 10px;
+        }
+
+        #message-box img [id="message-image"] {
+          width: 80%;
+          height: auto;
+          margin-top: 15px;
+          margin-right: 50px;
+        }
+
+        #message-box p {
+          font-size: 1.3rem;
+          font-weight: 500;
+        }
+
+        #close-button {
+          font-size: 10px;
+          border-radius: 100%;
+          padding: 2px;
+          margin-bottom: 10px;
+        }
+      }
+
+      @media screen and (max-width: 399px) {
+        #message-box {
+          top: 5%; /* Adjust top margin for smaller screens */
+          width: 300px; /* Increase width for small screens */
+        }
+        #heading {
+          font-size: 400px;
+          margin-right: 40px;
+        }
+        #message-image {
+          width: 80%;
+          height: auto;
+          margin-top: 15px;
+          margin-right: 30px;
+        }
+      }
+
+      .nav-button {
+        background-color: #ff7002; /* Green background */
+        color: white; /* White text */
+        border: none; /* No border */
+        padding: 10px 20px; /* Padding for size */
+        margin: 5px; /* Spacing between buttons */
+        border-radius: 25px; /* Rounded corners */
+        font-size: 15px; /* Text size */
+        cursor: pointer; /* Pointer cursor on hover */
+        transition: all 0.3s ease; /* Smooth transition */
+        margin-bottom: 20px;
+      }
+
+      /* Hover effect */
+      .nav-button:hover {
+        background-color: #ff5e00; /* Darker green on hover */
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+      }
+
+      /* Disabled button style */
+      .nav-button:disabled {
+        background-color: #747474; /* Light grey background */
+        color: #aaa; /* Grey text */
+        cursor: not-allowed; /* Not-allowed cursor */
+        box-shadow: none; /* Remove shadow */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="message-box">
+      <button id="close-button">X</button>
+      <!-- <img id="message-icon" src="icn.png" alt="" /> -->
+      <p
+        id="heading"
+        style="
+          text-align: center;
+          font-size: 1.6rem;
+          font-weight: bolder;
+          @media screen and (max-width: 399px) {
+            font-size: 5.9rem;
+          }
+        "
+      >
+        Welcome to
+        <a style="color: #ff5e00" id="subheading">Sampath AR Calendar 2025</a>
+      </p>
+      <img
+        id="message-image"
+        src="e.jpg"
+        alt=""
+        style="
+          width: 250px;
+          height: 150px;
+          border-radius: 100%;
+
+          margin-top: 10px;
+          margin-left: 20px;
+        "
+      />
+      <p id="message-content" style="margin-top: 20px">
+        Scan the image you want to visualize in AR. Once scanned, navigate to
+        the corresponding model.
+      </p>
+      <div id="navigation-buttons">
+        <button class="nav-button" id="prev-button" style="width:100px;" disabled>Previous</button>
+        <button class="nav-button" id="next-button" style="width: 100px;">Next</button>
+      </div>
+    </div>
+    <!-- Scene for the first .mind file -->
+    <a-scene
+      id="scene1"
+      mindar-image="imageTargetSrc: ./targets.mind; autoStart: true; showStats: false;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      embedded
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"
+    >
+      <a-assets>
+        <a-asset-item id="model1" src="./models/ELE.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0" id="target1"></a-entity>
+    </a-scene>
+
+    <!-- Scene for the second .mind file -->
+    <a-scene
+      id="scene2"
+      mindar-image="imageTargetSrc: ./targets2.mind; autoStart: true; showStats: false;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      embedded
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"
+    >
+      <a-assets>
+        <a-asset-item id="model2" src="./models/ELE2.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0" id="target2">
+        <a-entity gltf-model="#model2" position="0 0 0"></a-entity>
+      </a-entity>
+    </a-scene>
+
+    <!-- Scene for the third .mind file -->
+    <a-scene
+      id="scene3"
+      mindar-image="imageTargetSrc: ./targets3.mind; autoStart: true; showStats: false;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      embedded
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"
+    >
+      <a-assets>
+        <a-asset-item id="model3" src="./models/ELE3.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0" id="target3">
+        <a-entity gltf-model="#model3" position="0 0 0"></a-entity>
+      </a-entity>
+    </a-scene>
+
+    <!--Scene for the fourth .mind file-->
+    <a-scene
+      id="scene4"
+      mindar-image="imageTargetSrc: ./targets4.mind; autoStart: true; showStats: false;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      embedded
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"
+    >
+      <a-assets>
+        <a-asset-item id="model4" src="./models/ELE4.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0" id="target4">
+        <a-entity gltf-model="#model4" position="0 0 0"></a-entity>
+      </a-entity>
+    </a-scene>
+
+    <!--Scene for the fifth .mind file-->
+    <a-scene
+      id="scene5"
+      mindar-image="imageTargetSrc: ./targets5.mind; autoStart: true; showStats: false;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      embedded
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"
+    >
+      <a-assets>
+        <a-asset-item id="model5" src="./models/ELE5.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0" id="target5">
+        <a-entity gltf-model="#model5" position="0 0 0"></a-entity>
+      </a-entity>
+    </a-scene>
+
+    <!--Scene for the sixeth .mind file-->
+    <a-scene
+      id="scene6"
+      mindar-image="imageTargetSrc: ./targets6.mind; autoStart: true; showStats: false;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      embedded
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"
+    >
+      <a-assets>
+        <a-asset-item id="model5" src="./models/ELE5.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0" id="target6">
+        <a-entity gltf-model="#model5" position="0 0 0"></a-entity>
+      </a-entity>
+    </a-scene>
+
+    <!--Scene for the seventh .mind file-->
+    <a-scene
+      id="scene7"
+      mindar-image="imageTargetSrc: ./targets7.mind; autoStart: true; showStats: false;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      embedded
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"
+    >
+      <a-assets>
+        <a-asset-item id="model5" src="./models/ELE5.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0" id="target7">
+        <a-entity gltf-model="#model5" position="0 0 0"></a-entity>
+      </a-entity>
+    </a-scene>
+
+    <!--Scene for the eight .mind file-->
+    <a-scene
+      id="scene8"
+      mindar-image="imageTargetSrc: ./targets8.mind; autoStart: true; showStats: false;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      embedded
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"
+    >
+      <a-assets>
+        <a-asset-item id="model5" src="./models/ELE5.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0" id="target8">
+        <a-entity gltf-model="#model5" position="0 0 0"></a-entity>
+      </a-entity>
+    </a-scene>
+
+    <!--Scene for the nineth .mind file-->
+    <a-scene
+      id="scene9"
+      mindar-image="imageTargetSrc: ./targets9.mind; autoStart: true; showStats: false;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      embedded
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"
+    >
+      <a-assets>
+        <a-asset-item id="model5" src="./models/ELE5.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0" id="target9">
+        <a-entity gltf-model="#model5" position="0 0 0"></a-entity>
+      </a-entity>
+    </a-scene>
+
+    <!--Scene for the 10th .mind file-->
+    <a-scene
+      id="scene10"
+      mindar-image="imageTargetSrc: ./targets10.mind; autoStart: true; showStats: false;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      embedded
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"
+    >
+      <a-assets>
+        <a-asset-item id="model5" src="./models/ELE5.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0" id="target10">
+        <a-entity gltf-model="#model5" position="0 0 0"></a-entity>
+      </a-entity>
+    </a-scene>
+
+    <!--Scene for the 11th .mind file-->
+    <a-scene
+      id="scene11"
+      mindar-image="imageTargetSrc: ./targets11.mind; autoStart: true; showStats: false;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      embedded
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"
+    >
+      <a-assets>
+        <a-asset-item id="model5" src="./models/ELE5.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0" id="target11">
+        <a-entity gltf-model="#model5" position="0 0 0"></a-entity>
+      </a-entity>
+    </a-scene>
+
+    <!--Scene for the 12th .mind file-->
+    <a-scene
+      id="scene12"
+      mindar-image="imageTargetSrc: ./targets12.mind; autoStart: true; showStats: false;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      embedded
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"
+    >
+      <a-assets>
+        <a-asset-item id="model5" src="./models/ELE5.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0" id="target12">
+        <a-entity gltf-model="#model5" position="0 0 0"></a-entity>
+      </a-entity>
+    </a-scene>
+
+    <script>
+      // Messages and icons data
+      const messages = [
+        {
+          text: "Touch Next to see the Instructions for better experience",
+          icon: "s.png",
+          img: "s.jpg",
+          p: "Welcome to Sampath AR Calendar 2025",
+        },
+        {
+          text: "Point your camera steadily at the Calendar image",
+          icon: "s.png",
+          img: "s.jpg",
+          p: "Welcome to Sampath AR Calendar 2025",
+        },
+        {
+          text: "Ensure proper lighting for better detection.",
+          icon: "s.png",
+          p: "Welcome to Sampath AR Calendar 2025",
+        },
+        {
+          text: "Point the camera to a clear flat surface to place the AR",
+          icon: "s.png",
+          img: "s.jpg",
+          p: "Welcome to Sampath AR Calendar 2025",
+        },
+
+        {
+          text: "Explore the 3D model in augmented reality!",
+          icon: "s.png",
+          p: "Welcome to Sampath AR Calendar 2025",
+        },
+      ];
+
+      let currentMessageIndex = 0;
+
+      const messageBox = document.getElementById("message-box");
+      const messageContent = document.getElementById("message-content");
+      const messageIcon = document.getElementById("message-image");
+      const prevButton = document.getElementById("prev-button");
+      const nextButton = document.getElementById("next-button");
+      const heading = document.getElementById("heading");
+      const subheading = document.getElementById("subheading");
+
+      // Function to update the message
+      function updateMessage() {
+        const { text, icon, p, a } = messages[currentMessageIndex];
+        messageContent.textContent = text;
+        messageIcon.src = icon;
+        heading.textContent = p;
+        subheading.textContent = a;
+
+        if (p) {
+          const highlightedPart = "Sampath AR Calendar 2025";
+          if (p.includes(highlightedPart)) {
+            const parts = p.split(highlightedPart);
+
+            // Wrap the highlighted part in a span
+            heading.innerHTML = `${
+              parts[0] || ""
+            }<span style="color: #FF5733; font-weight: bold;">${highlightedPart}</span>${
+              parts[1] || ""
+            }`;
+          } else {
+            heading.textContent = p; // Use plain text if no highlight is needed
+          }
+          heading.style.display = "block";
+        } else {
+          heading.style.display = "none"; // Hide the heading if `p` is undefined
+        }
+
+        // Show heading only if index === 0
+        /* if (currentMessageIndex === 0) {
+          heading.style.display = "block";
+        } else {
+          heading.style.display = "none";
+        } */
+
+        // Disable/Enable navigation buttons
+        prevButton.disabled = currentMessageIndex === 0;
+        nextButton.disabled = currentMessageIndex === messages.length - 1;
+      }
+
+      // Event listeners for navigation buttons
+      prevButton.addEventListener("click", () => {
+        if (currentMessageIndex > 0) {
+          currentMessageIndex--;
+          updateMessage();
+        }
+      });
+
+      nextButton.addEventListener("click", () => {
+        if (currentMessageIndex < messages.length - 1) {
+          currentMessageIndex++;
+          updateMessage();
+        }
+      });
+
+      // Initialize
+      updateMessage();
+      document.addEventListener("DOMContentLoaded", () => {
+        // Get references to all scenes
+        const scene1 = document.getElementById("scene1");
+        const scene2 = document.getElementById("scene2");
+        const scene3 = document.getElementById("scene3");
+        const scene4 = document.getElementById("scene4");
+        const scene5 = document.getElementById("scene5");
+        const scene6 = document.getElementById("scene6");
+        const scene7 = document.getElementById("scene7");
+        const scene8 = document.getElementById("scene8");
+        const scene9 = document.getElementById("scene9");
+        const scene10 = document.getElementById("scene10");
+        const scene11 = document.getElementById("scene11");
+        const scene12 = document.getElementById("scene12");
+
+        // Show the first scene initially
+        scene1.classList.add("active");
+
+        // Target 1 (Scene 1) event listeners
+        const target1 = document.getElementById("target1");
+        target1.addEventListener("targetFound", () => {
+          console.log("Target 1 found! Navigating to page...");
+          window.location.href = "model1.html"; // Navigate to the first page
+        });
+
+        target1.addEventListener("targetLost", () => {
+          console.log("Target 1 lost!");
+        });
+
+        // Target 2 (Scene 2) event listeners
+        const target2 = document.getElementById("target2");
+        target2.addEventListener("targetFound", () => {
+          console.log("Target 2 found! Navigating to another page...");
+          window.location.href = "model2.html"; // Navigate to the second page
+        });
+
+        target2.addEventListener("targetLost", () => {
+          console.log("Target 2 lost!");
+        });
+
+        // Target 3 (Scene 3) event listeners
+        const target3 = document.getElementById("target3");
+        target3.addEventListener("targetFound", () => {
+          console.log("Target 3 found! Navigating to yet another page...");
+          window.location.href = "model3.html"; // Navigate to the third page
+        });
+
+        target3.addEventListener("targetLost", () => {
+          console.log("Target 3 lost!");
+        });
+
+        // Target 4 (Scene 4) event listeners
+        const target4 = document.getElementById("target4");
+        target4.addEventListener("targetFound", () => {
+          console.log("Target 4 found! Navigating to yet another page...");
+          window.location.href = "model4.html"; // Navigate to the fourth page
+        });
+
+        target4.addEventListener("targetLost", () => {
+          console.log("Target 4 lost!");
+        });
+
+        // Target 5 (Scene 5) event listeners
+        const target5 = document.getElementById("target5");
+        target5.addEventListener("targetFound", () => {
+          console.log("Target 5 found! Navigating to yet another page...");
+          window.location.href = "model5.html"; // Navigate to the fifth page
+        });
+
+        target5.addEventListener("targetLost", () => {
+          console.log("Target 5 lost!");
+        });
+
+        // Target 6 (Scene 6) event listeners
+        const target6 = document.getElementById("target6");
+        target6.addEventListener("targetFound", () => {
+          console.log("Target 6 found! Navigating to yet another page...");
+          window.location.href = "model6.html"; // Navigate to the sixth page
+        });
+
+        target6.addEventListener("targetLost", () => {
+          console.log("Target 6 lost!");
+        });
+
+        // Target 7 (Scene 7) event listeners
+        const target7 = document.getElementById("target7");
+        target7.addEventListener("targetFound", () => {
+          console.log("Target 7 found! Navigating to yet another page...");
+          window.location.href = "model7.html"; // Navigate to the seventh page
+        });
+
+        target7.addEventListener("targetLost", () => {
+          console.log("Target 7 lost!");
+        });
+
+        // Target 8 (Scene 8) event listeners
+        const target8 = document.getElementById("target8");
+        target8.addEventListener("targetFound", () => {
+          console.log("Target 8 found! Navigating to yet another page...");
+          window.location.href = "model8.html"; // Navigate to the eighth page
+        });
+
+        target8.addEventListener("targetLost", () => {
+          console.log("Target 8 lost!");
+        });
+
+        // Target 9 (Scene 9) event listeners
+        const target9 = document.getElementById("target9");
+        target9.addEventListener("targetFound", () => {
+          console.log("Target 9 found! Navigating to yet another page...");
+          window.location.href = "model9.html"; // Navigate to the ninth page
+        });
+
+        target9.addEventListener("targetLost", () => {
+          console.log("Target 9 lost!");
+        });
+
+        // Target 10 (Scene 10) event listeners
+        const target10 = document.getElementById("target10");
+        target10.addEventListener("targetFound", () => {
+          console.log("Target 10 found! Navigating to yet another page...");
+          window.location.href = "model10.html"; // Navigate to the tenth page
+        });
+
+        target10.addEventListener("targetLost", () => {
+          console.log("Target 10 lost!");
+        });
+
+        // Target 11 (Scene 11) event listeners
+        const target11 = document.getElementById("target11");
+        target11.addEventListener("targetFound", () => {
+          console.log("Target 11 found! Navigating to yet another page...");
+          window.location.href = "model11.html"; // Navigate to the eleventh page
+        });
+
+        target11.addEventListener("targetLost", () => {
+          console.log("Target 11 lost!");
+        });
+
+        // Target 12 (Scene 12) event listeners
+        const target12 = document.getElementById("target12");
+        target12.addEventListener("targetFound", () => {
+          console.log("Target 12 found! Navigating to yet another page...");
+          window.location.href = "model12.html"; // Navigate to the twelfth page
+        });
+
+        target12.addEventListener("targetLost", () => {
+          console.log("Target 12 lost!");
+        });
+
+        // Logic to switch between scenes dynamically
+        const switchToScene = (sceneToShow) => {
+          [
+            scene1,
+            scene2,
+            scene3,
+            scene4,
+            scene5,
+            scene6,
+            scene7,
+            scene8,
+            scene9,
+            scene10,
+            scene11,
+            scene12,
+          ].forEach((scene) => scene.classList.remove("active"));
+          sceneToShow.classList.add("active");
+        };
+
+        // Example: Automatically cycle through scenes
+        setTimeout(() => {
+          console.log("Switching to Scene 2");
+          switchToScene(scene2);
+        }, 5000);
+
+        setTimeout(() => {
+          console.log("Switching to Scene 3");
+          switchToScene(scene3);
+        }, 10000);
+
+        setTimeout(() => {
+          console.log("Switching to Scene 4");
+          switchToScene(scene4);
+        }, 15000);
+
+        setTimeout(() => {
+          console.log("Switching to Scene 5");
+          switchToScene(scene5);
+        }, 20000);
+
+        setTimeout(() => {
+          console.log("Switching to Scene 6");
+          switchToScene(scene6);
+        }, 25000);
+
+        setTimeout(() => {
+          console.log("Switching to Scene 7");
+          switchToScene(scene7);
+        }, 30000);
+
+        setTimeout(() => {
+          console.log("Switching to Scene 8");
+          switchToScene(scene8);
+        }, 35000);
+
+        setTimeout(() => {
+          console.log("Switching to Scene 9");
+          switchToScene(scene9);
+        }, 40000);
+      });
+
+      document.getElementById("close-button").addEventListener("click", () => {
+        document.getElementById("message-box").style.display = "none";
+      });
+    </script>
+  </body>
+</html>

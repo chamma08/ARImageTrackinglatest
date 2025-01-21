@@ -1,0 +1,236 @@
+{
+  "time": "2025-01-20T16:35:58.252Z",
+  "totalsize": 11225178,
+  "files": [
+    {
+      "path": "assets3/DefaultAvatar.glb",
+      "hash": "ccc4f11817cc4069ad6b38daa05f8fc48ada51b6650868518a07db68ab32d5ff",
+      "size": 26712
+    },
+    {
+      "path": "assets3/DefaultSyncCamera.glb",
+      "hash": "f84741fe5510867b60e7b32a5513d5ca62a59f0ff3b02565aa289b9c348d9636",
+      "size": 24596
+    },
+    {
+      "path": "assets3/favicon-8d99ceea.ico",
+      "hash": "8d99ceeacb8facc2b07ea2ce437fc23f6d7ce42492e9abbb7bb98d82749abc96",
+      "size": 15086
+    },
+    {
+      "path": "assets3/GenerateMeshBVHWorker-e4c53fbe.js",
+      "hash": "d6404ce1062adb100dc61af1fabfc7042958ade86f67d9aa1269cdd65ff93675",
+      "size": 160320
+    },
+    {
+      "path": "assets3/GLTFLoaderAnimationPointer-48c42dac.js",
+      "hash": "9d75bc21fab2275b4a4fe2b3b8fe6458b0eb2312001f90e19ad44a4fac260801",
+      "size": 8151
+    },
+    {
+      "path": "assets3/image_0_08b89f6f-4129-5bb2-b5ac-a1e99ea11cf6.glb",
+      "hash": "b10b00e578318b52d0568af369c051c673f51618e773d3e9ac7feb90edb1ef50",
+      "size": 996856
+    },
+    {
+      "path": "assets3/image_0_17438997-0e42-569a-bfd6-c9199f7d5586.glb",
+      "hash": "9d78c7eaa112234ac98fcb1795738266e69a01c5125e2a19813ef969d05df806",
+      "size": 460732
+    },
+    {
+      "path": "assets3/image_0_7290f85e-c19b-547d-9847-4c21a49ce193.glb",
+      "hash": "ed057260a39ac67ad48c859262549e969ce98b8b9a7a7bb44aef0abb78b8b666",
+      "size": 992492
+    },
+    {
+      "path": "assets3/image_1_08b89f6f-4129-5bb2-b5ac-a1e99ea11cf6.glb",
+      "hash": "c3baeccdd7625b8cf901ef1f8d128c677d0304a1de8bffdf93dee54d0f720cb4",
+      "size": 202232
+    },
+    {
+      "path": "assets3/image_1_17438997-0e42-569a-bfd6-c9199f7d5586.glb",
+      "hash": "5dd1a797eec7a4b924b67fe10a536540d435276410f422a3427ba080ff4117bb",
+      "size": 65696
+    },
+    {
+      "path": "assets3/image_1_7290f85e-c19b-547d-9847-4c21a49ce193.glb",
+      "hash": "2ad7bbb938643b2ed023d948ad558d95672e3fd7d35613ef3670e0c0cab47c0a",
+      "size": 123348
+    },
+    {
+      "path": "assets3/image_2_08b89f6f-4129-5bb2-b5ac-a1e99ea11cf6.glb",
+      "hash": "475b97e451535a75b1ab4149e7d648aee283cceca6dac17897173969da189ba6",
+      "size": 72860
+    },
+    {
+      "path": "assets3/image_2_17438997-0e42-569a-bfd6-c9199f7d5586.glb",
+      "hash": "a3165a4d23fb0d69e7fd8b1176918d3a5702fb6cbde20ac30c76e133994db5eb",
+      "size": 26616
+    },
+    {
+      "path": "assets3/image_2_7290f85e-c19b-547d-9847-4c21a49ce193.glb",
+      "hash": "5ae32b66c60d0b92121ffec132c36088f6eeedaa6cd635fb4016b5b4956bc05a",
+      "size": 49008
+    },
+    {
+      "path": "assets/image_3_08b89f6f-4129-5bb2-b5ac-a1e99ea11cf6.glb",
+      "hash": "93bb587d267f1316b1c49b70ff3c0c3c2f546bc54c0f24df62ce3b5bc53fbd2f",
+      "size": 24764
+    },
+    {
+      "path": "assets/image_3_17438997-0e42-569a-bfd6-c9199f7d5586.glb",
+      "hash": "e07c12de7db823838f1a303faf90fdf48e482949fd51a7c80cf36778481448a5",
+      "size": 8592
+    },
+    {
+      "path": "assets/image_3_7290f85e-c19b-547d-9847-4c21a49ce193.glb",
+      "hash": "f164a69671ef7c83a73c6c5434686c2ff400ad50966c39c932298d38f1e1258d",
+      "size": 17816
+    },
+    {
+      "path": "assets/index-7f6e353c.css",
+      "hash": "7f6e353c0d308aee3e79c962533c39f5d5e76d7ad844254bfe7001a2fb3139d9",
+      "size": 128
+    },
+    {
+      "path": "assets/index-a024389a.js",
+      "hash": "d6fc431c3da616984fd35ad704bba13915bc69038db62d5997ac746ae1d2bc02",
+      "size": 2213
+    },
+    {
+      "path": "assets/index-d435bc06.js",
+      "hash": "257ea59799bc124294d8e88b51a433b1729c29d2858210b4027f393f4df507fc",
+      "size": 31149
+    },
+    {
+      "path": "assets/index-d7be2e3b.js",
+      "hash": "cda74548a9daff6f0d23e842e1ff582766876f16cf72a9e46021110333ef76cd",
+      "size": 10381
+    },
+    {
+      "path": "assets/MeshBVH-68936e34.js",
+      "hash": "ada8ea08e67867830954df8ed8c80ef8305810c3f44bd0e83b2580999faaec88",
+      "size": 40750
+    },
+    {
+      "path": "assets/mesh_lod_0_18435702338111596945_6c2c4a9b66fcd244eb8487eed188ebfa.glb",
+      "hash": "8e9913f7892c67314e8846daaf4daba51797e3f1790d0a87dceaac735236fb16",
+      "size": 149124
+    },
+    {
+      "path": "assets/mesh_lod_1_18435702338111596945_6c2c4a9b66fcd244eb8487eed188ebfa.glb",
+      "hash": "6c79c57d806c1692b68b550d40bc6418ca0bc84cab6624983ade9e893e591a81",
+      "size": 94024
+    },
+    {
+      "path": "assets/mesh_lod_2_18435702338111596945_6c2c4a9b66fcd244eb8487eed188ebfa.glb",
+      "hash": "3900a9d88657ae2e4d48befded5a6e5b85c139d47e227bbd1bcde6f8dc3022b5",
+      "size": 57336
+    },
+    {
+      "path": "assets/mesh_lod_3_18435702338111596945_6c2c4a9b66fcd244eb8487eed188ebfa.glb",
+      "hash": "fc408bc7b7047714b39c71e7a106a6b6f5b7eb55dafd4b3d2bc2fc85bce1b405",
+      "size": 34764
+    },
+    {
+      "path": "assets3/mesh_lod_4_18435702338111596945_6c2c4a9b66fcd244eb8487eed188ebfa.glb",
+      "hash": "d132f8a17b3d9a85d4997c570f8a059e4cc29081bfaa61774338de51e44d3176",
+      "size": 26528
+    },
+    {
+      "path": "assets3/needle-asap-efdda875.js",
+      "hash": "2865cd93ae2761dcd8539b760f5446fe9f88deddaa75e181aecc0137eafeaf05",
+      "size": 29347
+    },
+    {
+      "path": "assets3/needle-engine-a19c67e4.js",
+      "hash": "4f06b12c2e5005ee5c94354a79302f7446a7ea1973bd56016e3101501b31fba7",
+      "size": 4371639
+    },
+    {
+      "path": "assets3/register_types-4ed993c7.js",
+      "hash": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "size": 1
+    },
+    {
+      "path": "assets3/three.module-6f29248d.js",
+      "hash": "17e9e9230a8f1d407527265f030722d68c93e5a13332d6aa535e3b8c43027e9f",
+      "size": 677096
+    },
+    {
+      "path": "assets3/Turtle.glb",
+      "hash": "19834b5387bf7551e0a17e75139caf863a1bef3c3c475f70c3618f7151a54fa0",
+      "size": 89444
+    },
+    {
+      "path": "assets3/turtle.mp3",
+      "hash": "c64bdf68d87cc0b125db930027012380dda0aced47c195b21fb9dd0ebf5122ae",
+      "size": 548571
+    },
+    {
+      "path": "include/.DS_Store",
+      "hash": "95218b379035e6271c6d66dfd49c7c398073b993c94460e0f13a8c3a37ab734e",
+      "size": 6148
+    },
+    {
+      "path": "include/draco/draco_decoder.js",
+      "hash": "f5c74300d9dd17d67ab3221b3ca67ad6bae36de95db56ac665a4057a6e9bd365",
+      "size": 720182
+    },
+    {
+      "path": "include/draco/draco_decoder.wasm",
+      "hash": "2516a4e43526d71787bf2f678f951329f7f858f8f15f42d4bc9e370b31a0da3a",
+      "size": 285948
+    },
+    {
+      "path": "include/draco/draco_wasm_wrapper.js",
+      "hash": "e8049906ef3f8f75d3456c22a3f31bfdfe5b5b5bd09ccdec613b9e9a49d554d8",
+      "size": 58763
+    },
+    {
+      "path": "include/ktx2/basis_transcoder.js",
+      "hash": "adc89c49e31b7b55ec3b246f8ecffc8e92164aadf0ad45e38757bbddeb4031ec",
+      "size": 62358
+    },
+    {
+      "path": "include/ktx2/basis_transcoder.wasm",
+      "hash": "79ae97d781e10a566659c689b7bb1de91726453f55f9f5e3bcc07a4e3904070f",
+      "size": 499935
+    },
+    {
+      "path": "include/needle/arial-msdf.json",
+      "hash": "01cecef3bb0b11a7b8cd72d477c22d788deee90c26e2edce39641a69829aa02c",
+      "size": 33702
+    },
+    {
+      "path": "include/needle/arial.png",
+      "hash": "05382064d7bd8b25e7894f046e890b36f4f9c765de6769d76031574b245ecb4c",
+      "size": 92113
+    },
+    {
+      "path": "include/needle/poweredbyneedle.webp",
+      "hash": "c8d12c66a8ad815f6cef27a7a935c6c1a1305cdadabf403b7b758d062bce3a5a",
+      "size": 10424
+    },
+    {
+      "path": "include/poster.webp",
+      "hash": "ef63191ef69d5d0bbb951edc17cc3485e7c83fb913d9e8e6f90d0a89393fb40f",
+      "size": 8228
+    },
+    {
+      "path": "include/three/DragControls.js",
+      "hash": "25ae851bc46877438b4558387a687aa73ea5a9d53dc1a94f04ea21e212e541ed",
+      "size": 6396
+    },
+    {
+      "path": "include/three/EXT_mesh_gpu_instancing_exporter.js",
+      "hash": "5e08b78e83c452eb211e6aae6b8adad982b40a3bd47e3e097ec2fcad29ed0897",
+      "size": 1549
+    },
+    {
+      "path": "/index.html",
+      "hash": "090fc38874e12a6f9a065d4c2e4ee2b54b955e3a9931d5914b18f6695088f000",
+      "size": 1060
+    }
+  ]
+}
